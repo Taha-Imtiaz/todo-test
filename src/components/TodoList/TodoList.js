@@ -1,30 +1,62 @@
-import React, { Fragment } from 'react'
+import React from "react";
 
-const TodoList = ({ todoArr, handleDelete, todoEdited,handleUpdate, handleInputField }) => {
-    console.log(todoArr)
-    return (
-        <>
-        {/* <h1>Todo List</h1> */}
-            {todoArr.length > 0 && todoArr?.map((todo, i) => 
-               <div className='row'>
-                 <div key={i} className = "col-9">
-                  {todoEdited ? 
-                 <input type="text" value={todo} onChange = {handleInputField}></input>
-                 :  <h1>{todo}</h1>}
-                    
+const TodoList = ({
+  todoArr,
+  handleDelete,
+  handleInputField,
+  handleUpdate,
+  handleEdit,
+}) => {
+  console.log(todoArr);
+  return (
+    <>
+      { todoArr && todoArr.length >0 &&
+        todoArr.map((todo, i) => (
+          <div className="row m-2" key={i}>
+            <div className="col-9 my-2">
+              {todo.isEdit ? (
+                <input
+                  type="text"
+                  className="form-control"
+                  value={todo.todo}
+                  onChange={(e) => handleInputField(e, i)}
+                ></input>
+              ) : (
+                <h1>{todo.todo}</h1>
+              )}
+            </div>
+            <div className="col-1">
+              {todo.isEdit ? (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() =>handleUpdate(i)}
+                >
+                  Update{" "}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() =>handleEdit(i)}
+                >
+                  Edit{" "}
+                </button>
+              )}
+            </div>
+            <div className="col-1">
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => handleDelete(todo.todo)}
+              >
+                Delete{" "}
+              </button>
+            </div>
+          </div>
+        ))}
+    </>
+  );
+};
 
-                </div>
-                <div className='col-1'>
-               { todoEdited ? <button type="button" class="btn btn-success" onClick = {() => handleUpdate(todo)} >Update </button>: <button type="button" class="btn btn-success" onClick = {() => handleUpdate(todo)} >Edit </button>}
-                </div>
-                <div className='col-1'>
-                <button type="button" class="btn btn-danger" onClick={() => handleDelete(todo)}>Delete </button>
-
-                </div>
-               </div>
-            )}
-        </>
-    )
-}
-
-export default TodoList
+export default TodoList;
